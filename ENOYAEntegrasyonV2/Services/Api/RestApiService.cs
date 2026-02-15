@@ -88,6 +88,7 @@ namespace ENOYAEntegrasyonV2.Services.Api
         {
             try
             {
+                routingAlternative = AppGlobals.appSettings.General.AlternativeRoute;
                 contract = contract ?? _settings.Contract;
                 var token = await GetAccessTokenAsync();
 

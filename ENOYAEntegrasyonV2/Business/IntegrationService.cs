@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.XtraPrinting.Native;
 using ENOYAEntegrasyonV2.DbContxt;
 using ENOYAEntegrasyonV2.Models.Entities;
 using ENOYAEntegrasyonV2.Repositories.Interfaces;
@@ -92,20 +91,33 @@ namespace ENOYAEntegrasyonV2.Business
         {
             try
             {
+                routingAlternative = AppGlobals.appSettings.General.AlternativeRoute;
                 _logger.LogInfo("İş emri senkronizasyonu başlatılıyor...");
 
                 var orders = await _apiService.GetShopOrderListAsync(contract, "", routingAlternative);
 
+                // TODO: IFSPLAN tablosuna kaydetme işlemi
+                using var ctx = new TesisContext();
+
                 if (orders == null || orders.Count == 0)
                 {
+                    var allActivePlans = await ctx.IFSPLANs
+                       .Where(p => p.DURUM != "4")
+                       .ToListAsync();
+                    if (allActivePlans.Count > 0)
+                    {
+                        foreach (var p in allActivePlans)
+                            p.DURUM = "4";
+
+                        await ctx.SaveChangesAsync();
+                    }
                     _logger.LogWarning("İş emri bulunamadı");
                     return false;
                 }
 
                 _logger.LogInfo($"{orders.Count} adet iş emri bulundu");
 
-                // TODO: IFSPLAN tablosuna kaydetme işlemi
-                using var ctx = new TesisContext();
+                
                 List<IFSPLANLine> siparisler = new List<IFSPLANLine>();
                 foreach (IFSPLANLine item in orders)
                 {
@@ -214,6 +226,8 @@ namespace ENOYAEntegrasyonV2.Business
                     .Where(x => !string.IsNullOrWhiteSpace(x))
                     .Distinct(StringComparer.OrdinalIgnoreCase)
                     .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+                
 
                 var localActivePlans = await ctx.IFSPLANs
                     .Where(p => p.DURUM != "4")
@@ -1035,7 +1049,7 @@ namespace ENOYAEntegrasyonV2.Business
             try
             {
                 List<IFSPLANLine> orders = new List<IFSPLANLine>();
-
+                routingAlternative = AppGlobals.appSettings.General.AlternativeRoute;
                 _logger.LogInfo("İş emri senkronizasyonu başlatılıyor...");
 
                 if (yerelOkuma)

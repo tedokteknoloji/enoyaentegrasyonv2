@@ -126,7 +126,7 @@ namespace ENOYAEntegrasyonV2
         {
 
             AppGlobals.appSettings = _configService.GetSettings();
-
+            
             // Database servisi
             //var databaseService = new SqlServerService(AppGlobals.appSettings.Database);
 
@@ -501,16 +501,30 @@ namespace ENOYAEntegrasyonV2
 
                 //var orders = await _apiService.GetShopOrderListAsync(contract, "", routingAlternative);
 
-                //if (orders == null || orders.Count == 0)
-                //{
-                //    _logger.LogWarning("İş emri bulunamadı");
-                //    return false;
-                //}
+                
 
                 _logger.LogInfo($"{orders.Count} adet iş emri bulundu");
 
                 // TODO: IFSPLAN tablosuna kaydetme işlemi
                 using var ctx = new TesisContext();
+
+                if (orders == null || orders.Count == 0)
+                {
+                    var allActivePlans = await ctx.IFSPLANs
+                      .Where(p => p.DURUM != "4")
+                      .ToListAsync();
+                    if (allActivePlans.Count > 0)
+                    {
+                        foreach (var p in allActivePlans)
+                            p.DURUM = "4";
+
+                        await ctx.SaveChangesAsync();
+                    }
+                    _logger.LogWarning("İş emri bulunamadı");
+                    //return;
+                }
+
+
                 List<IFSPLANLine> siparisler = new List<IFSPLANLine>();
                 foreach (IFSPLANLine item in orders)
                 {

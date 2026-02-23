@@ -819,6 +819,7 @@ namespace ENOYAEntegrasyonV2
                                     case enumBunkerIcerikTipi.Su2:
                                         break;
                                     case enumBunkerIcerikTipi.Katkı:
+                                        Amount = Math.Round(satir.QtyPerAssembly.ToDecimal(), 2);
                                         if (aktifMalzeme.PART_NO.StartsWith("06"))
                                         {
                                             int KulSiloNo = Convert.ToInt32(configIcerik.KULSILO);

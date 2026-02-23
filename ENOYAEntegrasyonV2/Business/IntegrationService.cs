@@ -414,6 +414,7 @@ namespace ENOYAEntegrasyonV2.Business
                                     case enumBunkerIcerikTipi.Su2:
                                         break;
                                     case enumBunkerIcerikTipi.Katkı:
+                                        Amount = Math.Round(satir.QtyPerAssembly.ToDecimal(), 2);
                                         if (aktifMalzeme.PART_NO.StartsWith("06"))
                                         {
                                             int KulSiloNo = Convert.ToInt32(configIcerik.KULSILO);
@@ -536,6 +537,25 @@ namespace ENOYAEntegrasyonV2.Business
                         {
                             MessageBox.Show(tekilSiparisIcerik[0].OrderNo + " nolu İş Emri eklenemedi.");
                         }
+
+                        var kontrolsql = @"DELETE FROM IFSPLAN 
+                                WHERE
+                                  COALESCE(NULLIF(REPLACE(MIKTAR, ',', '.'), ''), 0) = 0
+                                  OR (
+                                    COALESCE(NULLIF(REPLACE(AG1_IST, ',', '.'), ''), 0) +
+                                    COALESCE(NULLIF(REPLACE(AG2_IST, ',', '.'), ''), 0) +
+                                    COALESCE(NULLIF(REPLACE(AG3_IST, ',', '.'), ''), 0) +
+                                    COALESCE(NULLIF(REPLACE(AG4_IST, ',', '.'), ''), 0) +
+                                    COALESCE(NULLIF(REPLACE(AG5_IST, ',', '.'), ''), 0) +
+                                    COALESCE(NULLIF(REPLACE(AG6_IST, ',', '.'), ''), 0)
+                                  ) = 0
+                                  OR (
+                                    COALESCE(NULLIF(REPLACE(CM1_IST, ',', '.'), ''), 0) +
+                                    COALESCE(NULLIF(REPLACE(CM2_IST, ',', '.'), ''), 0) +
+                                    COALESCE(NULLIF(REPLACE(CM3_IST, ',', '.'), ''), 0) +
+                                    COALESCE(NULLIF(REPLACE(CM4_IST, ',', '.'), ''), 0)
+                                  ) = 0";
+                        affected = ctx.Database.ExecuteSqlCommand(kontrolsql);
                     }
                 }
 

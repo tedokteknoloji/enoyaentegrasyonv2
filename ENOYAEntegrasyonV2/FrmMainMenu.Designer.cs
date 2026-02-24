@@ -58,6 +58,7 @@
             this.colGKS_YOG = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colGKS_INCE_YOG = new DevExpress.XtraGrid.Columns.GridColumn();
             this.tabpageSiparis = new DevExpress.XtraTab.XtraTabPage();
+            this.ceYerelSiparisOku = new DevExpress.XtraEditors.CheckEdit();
             this.btnSiparisAktar = new System.Windows.Forms.Button();
             this.btnSiparisOku = new System.Windows.Forms.Button();
             this.grdSiparis = new DevExpress.XtraGrid.GridControl();
@@ -121,7 +122,10 @@
             this.grpConnection = new System.Windows.Forms.GroupBox();
             this.lblApiStatus = new System.Windows.Forms.Label();
             this.lblDatabaseStatus = new System.Windows.Forms.Label();
-            this.ceYerelSiparisOku = new DevExpress.XtraEditors.CheckEdit();
+            this.contextMalzeme = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.contextSiparis = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.exceleAktarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exceleAktarToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.tabcontMainMenu)).BeginInit();
             this.tabcontMainMenu.SuspendLayout();
             this.tabpageMalzeme.SuspendLayout();
@@ -131,6 +135,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.bindMalzeme)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gviewMalzeme)).BeginInit();
             this.tabpageSiparis.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ceYerelSiparisOku.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdSiparis)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindIFSPlanline)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gviewSiparis)).BeginInit();
@@ -145,7 +150,8 @@
             this.grpSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numInterval)).BeginInit();
             this.grpConnection.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ceYerelSiparisOku.Properties)).BeginInit();
+            this.contextMalzeme.SuspendLayout();
+            this.contextSiparis.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabcontMainMenu
@@ -397,6 +403,14 @@
             this.tabpageSiparis.Name = "tabpageSiparis";
             this.tabpageSiparis.Size = new System.Drawing.Size(927, 232);
             this.tabpageSiparis.Text = "Sipariş Listesi";
+            // 
+            // ceYerelSiparisOku
+            // 
+            this.ceYerelSiparisOku.Location = new System.Drawing.Point(373, 7);
+            this.ceYerelSiparisOku.Name = "ceYerelSiparisOku";
+            this.ceYerelSiparisOku.Properties.Caption = "Yerel Sipariş Oku";
+            this.ceYerelSiparisOku.Size = new System.Drawing.Size(159, 19);
+            this.ceYerelSiparisOku.TabIndex = 6;
             // 
             // btnSiparisAktar
             // 
@@ -985,13 +999,33 @@
             this.lblDatabaseStatus.TabIndex = 0;
             this.lblDatabaseStatus.Text = "MSSQL Bağlantısı: Test ediliyor...";
             // 
-            // ceYerelSiparisOku
+            // contextMalzeme
             // 
-            this.ceYerelSiparisOku.Location = new System.Drawing.Point(373, 7);
-            this.ceYerelSiparisOku.Name = "ceYerelSiparisOku";
-            this.ceYerelSiparisOku.Properties.Caption = "Yerel Sipariş Oku";
-            this.ceYerelSiparisOku.Size = new System.Drawing.Size(159, 19);
-            this.ceYerelSiparisOku.TabIndex = 6;
+            this.contextMalzeme.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exceleAktarToolStripMenuItem});
+            this.contextMalzeme.Name = "contextMalzeme";
+            this.contextMalzeme.Size = new System.Drawing.Size(138, 26);
+            this.contextMalzeme.Opening += new System.ComponentModel.CancelEventHandler(this.contextMalzeme_Opening);
+            // 
+            // contextSiparis
+            // 
+            this.contextSiparis.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exceleAktarToolStripMenuItem1});
+            this.contextSiparis.Name = "contextMalzeme";
+            this.contextSiparis.Size = new System.Drawing.Size(181, 48);
+            // 
+            // exceleAktarToolStripMenuItem
+            // 
+            this.exceleAktarToolStripMenuItem.Name = "exceleAktarToolStripMenuItem";
+            this.exceleAktarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exceleAktarToolStripMenuItem.Text = "Excele Aktar";
+            // 
+            // exceleAktarToolStripMenuItem1
+            // 
+            this.exceleAktarToolStripMenuItem1.Name = "exceleAktarToolStripMenuItem1";
+            this.exceleAktarToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.exceleAktarToolStripMenuItem1.Text = "Excele Aktar";
+            this.exceleAktarToolStripMenuItem1.Click += new System.EventHandler(this.exceleAktarToolStripMenuItem1_Click);
             // 
             // FrmMainMenu
             // 
@@ -1015,6 +1049,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.bindMalzeme)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gviewMalzeme)).EndInit();
             this.tabpageSiparis.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ceYerelSiparisOku.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdSiparis)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindIFSPlanline)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gviewSiparis)).EndInit();
@@ -1032,7 +1067,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numInterval)).EndInit();
             this.grpConnection.ResumeLayout(false);
             this.grpConnection.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ceYerelSiparisOku.Properties)).EndInit();
+            this.contextMalzeme.ResumeLayout(false);
+            this.contextSiparis.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1131,5 +1167,9 @@
         private DevExpress.XtraGrid.Views.Grid.GridView gviewPeriyotlar;
         private DevExpress.XtraEditors.DateEdit deTarih;
         private DevExpress.XtraEditors.CheckEdit ceYerelSiparisOku;
+        private System.Windows.Forms.ContextMenuStrip contextMalzeme;
+        private System.Windows.Forms.ToolStripMenuItem exceleAktarToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextSiparis;
+        private System.Windows.Forms.ToolStripMenuItem exceleAktarToolStripMenuItem1;
     }
 }

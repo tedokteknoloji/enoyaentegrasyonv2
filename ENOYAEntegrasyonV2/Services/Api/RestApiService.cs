@@ -101,7 +101,8 @@ namespace ENOYAEntegrasyonV2.Services.Api
                 response.EnsureSuccessStatusCode();
 
                 var content = await response.Content.ReadAsStringAsync();
-                //File.WriteAllText("siparis" + DateTime.Now.ToString("yyyy-MM-dd-HHmmss") + ".json", JsonConvert.SerializeObject(content));
+                if (AppGlobals.saveServiceFile)
+                    File.WriteAllText("siparis" + DateTime.Now.ToString("yyyy-MM-dd-HHmmss") + ".json", JsonConvert.SerializeObject(content));
 
                 var odataResponse = JsonConvert.DeserializeObject<ODataResponse<IFSPLANLine>>(content);
                 var plans = odataResponse?.Value ?? new List<IFSPLANLine>();
@@ -137,7 +138,8 @@ namespace ENOYAEntegrasyonV2.Services.Api
 
                 var content = await response.Content.ReadAsStringAsync();
                 // TODO: JSON mapping implementasyonu
-                //File.WriteAllText("malzeme.json", JsonConvert.SerializeObject(content), Encoding.UTF8);
+                if (AppGlobals.saveServiceFile)
+                    File.WriteAllText("malzeme.json", JsonConvert.SerializeObject(content), Encoding.UTF8);
                 var odataResponse = JsonConvert.DeserializeObject<ODataResponse<MALZEME>>(content);
                 var materials = odataResponse?.Value ?? new List<MALZEME>();
 

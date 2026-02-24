@@ -32,14 +32,22 @@ namespace ENOYAEntegrasyonV2
         private NotifyIcon _notifyIcon;
         private bool _isIntegrationRunning = false;
         RestApiService apiService;
+        string[] _args;
+        
 
-        public FrmMainMenu(ILoggerService logger, IConfigurationService configService)
+        public FrmMainMenu(ILoggerService logger, IConfigurationService configService, string[] args)
         {
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _configService = configService ?? throw new ArgumentNullException(nameof(configService));
             InitializeComponent();
+            if (args != null && args.Length>0)
+            {
+                this._args = args;
+                AppGlobals.saveServiceFile = true;
+            }
             deTarih.DateTime = AppGlobals.malzemeTarihi;
+            
             InitializeServices();
             InitializeNotifyIcon();
             LoadSettings();
@@ -48,7 +56,8 @@ namespace ENOYAEntegrasyonV2
         private void FrmMainMenu_Load(object sender, EventArgs e)
         {
             _logger.LogInfo("Ana form yüklendi");
-
+            grdMalzeme.ContextMenuStrip = contextMalzeme;
+            grdSiparis.ContextMenuStrip = contextSiparis;
             // Test bağlantıları
             TestConnections();
         }
@@ -1326,5 +1335,14 @@ namespace ENOYAEntegrasyonV2
 
         }
 
+        private void contextMalzeme_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            grdMalzeme.ExportToXlsx("MalzemeExcel.xlsx");
+        }
+
+        private void exceleAktarToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            grdSiparis.ExportToXlsx("SiparisExcel.xlsx");
+        }
     }
 }

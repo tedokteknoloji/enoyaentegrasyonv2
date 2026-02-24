@@ -15,7 +15,7 @@ namespace ENOYAEntegrasyonV2
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -44,7 +44,7 @@ namespace ENOYAEntegrasyonV2
                     var settings = configService.LoadSettings();
 
                     // Ana formu göster
-                    Application.Run(new FrmMainMenu(logger, configService));
+                    Application.Run(new FrmMainMenu(logger, configService, args));
                     // İsteğe bağlı - uygulama kapanırken bırak
                     _mutex.ReleaseMutex();
                 }

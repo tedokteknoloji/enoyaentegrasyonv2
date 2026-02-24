@@ -10,6 +10,7 @@ namespace ENOYAEntegrasyonV2.Business
 {
     public class AppGlobals
     {
+        public static bool saveServiceFile = false;
         public static AppSettings appSettings { get; set; }
         public static DateTime malzemeTarihi { get; set; } = DateTime.Today.AddDays(-7);
         public static List<SiloAdlari> siloList { get; set; } = SiloAdlari.siloTanimlari();

@@ -123,8 +123,8 @@
             this.lblApiStatus = new System.Windows.Forms.Label();
             this.lblDatabaseStatus = new System.Windows.Forms.Label();
             this.contextMalzeme = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.contextSiparis = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exceleAktarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextSiparis = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exceleAktarToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.tabcontMainMenu)).BeginInit();
             this.tabcontMainMenu.SuspendLayout();
@@ -930,14 +930,19 @@
             // 
             // numInterval
             // 
+            this.numInterval.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             this.numInterval.Location = new System.Drawing.Point(258, 24);
             this.numInterval.Maximum = new decimal(new int[] {
-            3600,
+            112,
             0,
             0,
             0});
             this.numInterval.Minimum = new decimal(new int[] {
-            10,
+            20,
             0,
             0,
             0});
@@ -949,6 +954,7 @@
             0,
             0,
             0});
+            this.numInterval.ValueChanged += new System.EventHandler(this.numInterval_ValueChanged);
             // 
             // chkMinimizeToTray
             // 
@@ -1007,23 +1013,23 @@
             this.contextMalzeme.Size = new System.Drawing.Size(138, 26);
             this.contextMalzeme.Opening += new System.ComponentModel.CancelEventHandler(this.contextMalzeme_Opening);
             // 
+            // exceleAktarToolStripMenuItem
+            // 
+            this.exceleAktarToolStripMenuItem.Name = "exceleAktarToolStripMenuItem";
+            this.exceleAktarToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.exceleAktarToolStripMenuItem.Text = "Excele Aktar";
+            // 
             // contextSiparis
             // 
             this.contextSiparis.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exceleAktarToolStripMenuItem1});
             this.contextSiparis.Name = "contextMalzeme";
-            this.contextSiparis.Size = new System.Drawing.Size(181, 48);
-            // 
-            // exceleAktarToolStripMenuItem
-            // 
-            this.exceleAktarToolStripMenuItem.Name = "exceleAktarToolStripMenuItem";
-            this.exceleAktarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exceleAktarToolStripMenuItem.Text = "Excele Aktar";
+            this.contextSiparis.Size = new System.Drawing.Size(138, 26);
             // 
             // exceleAktarToolStripMenuItem1
             // 
             this.exceleAktarToolStripMenuItem1.Name = "exceleAktarToolStripMenuItem1";
-            this.exceleAktarToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.exceleAktarToolStripMenuItem1.Size = new System.Drawing.Size(137, 22);
             this.exceleAktarToolStripMenuItem1.Text = "Excele Aktar";
             this.exceleAktarToolStripMenuItem1.Click += new System.EventHandler(this.exceleAktarToolStripMenuItem1_Click);
             // 

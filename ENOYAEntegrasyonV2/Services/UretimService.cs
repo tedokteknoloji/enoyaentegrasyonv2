@@ -16,13 +16,13 @@ namespace ENOYAEntegrasyonV2.Services
     {
         private readonly IRestApiService restApiService;
         private readonly ILoggerService _logger;
-        
+
         public UretimService(IRestApiService restApiService, ILoggerService logger)
         {
             this.restApiService = restApiService;
             _logger = logger;
         }
-        
+
         public async Task UretimVerisiGonder()
         {
             using (var ctx = new TesisContext())
@@ -43,7 +43,7 @@ namespace ENOYAEntegrasyonV2.Services
                 {
                     if (sev.ORDER_CODE == "M")
                     {
-                        GonderMKaydi(ctx, sev, siloList);
+                        GonderMKaydi(sev, siloList);
                     }
                     else if (sev.ORDER_CODE == "F")
                     {
@@ -64,10 +64,12 @@ namespace ENOYAEntegrasyonV2.Services
         }
 
         // M tipi siparişlerin gönderimi (güncellenmiş, periyot bazlı hesaplama)
-        private async void GonderMKaydi(TesisContext ctxA, SEVKIYAT sev, List<SiloAdlari> siloList)
+        private async void GonderMKaydi(SEVKIYAT sev, List<SiloAdlari> siloList)
         {
             try
             {
+                if (AppGlobals.saveServiceFile)
+                    _logger.LogInfo($"{sev.ORDER_NO} referanslı IFS üretim gönderimi başladı.");
                 using var ctx = new TesisContext();
                 // İlgili plan kaydı
                 var plan = await ctx.IFSPLANs.FirstOrDefaultAsync(p => p.ORDER_NO == sev.ORDER_NO);
@@ -394,6 +396,8 @@ namespace ENOYAEntegrasyonV2.Services
                     // IFS gönderimi + TXT dosya yazımı
                     await GonderIFSveDosyaYaz(sev.ORDER_NO, perIndex, queryText);
                 }
+                if (AppGlobals.saveServiceFile)
+                    _logger.LogInfo($"{sev.ORDER_NO} referanslı IFS üretim gönderimi tamamlandı.");
             }
             catch (Exception exc)
             {

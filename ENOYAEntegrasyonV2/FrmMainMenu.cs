@@ -29,6 +29,7 @@ namespace ENOYAEntegrasyonV2
         private readonly IConfigurationService _configService;
         private IntegrationService _integrationService;
         private System.Windows.Forms.Timer _integrationTimer;
+        private System.Windows.Forms.Timer _integrationTimerProduction;
         private NotifyIcon _notifyIcon;
         private bool _isIntegrationRunning = false;
         RestApiService apiService;
@@ -79,6 +80,7 @@ namespace ENOYAEntegrasyonV2
         private void btnSyncNow_Click(object sender, EventArgs e)
         {
             Task.Run(async () => await RunIntegrationAsync());
+            Task.Run(async () => await RunIntegrationProductionAsync());
         }
         private async void TestConnections()
         {
@@ -221,32 +223,90 @@ namespace ENOYAEntegrasyonV2
             _integrationTimer.Tick += async (s, e) => await RunIntegrationAsync();
             _integrationTimer.Start();
 
+            // Timer Production başlat
+            _integrationTimerProduction = new System.Windows.Forms.Timer();
+            _integrationTimerProduction.Interval = ((AppGlobals.appSettings.General.IntegrationIntervalSeconds)/2) * 1000;
+            _integrationTimerProduction.Tick += async (s, e) => await RunIntegrationProductionAsync();
+            _integrationTimerProduction.Start();
+
             // İlk çalıştırmayı hemen yap
             Task.Run(async () => await RunIntegrationAsync());
+
+            // İlk Production çalıştırmayı hemen yap
+            Task.Run(async () => await RunIntegrationProductionAsync());
         }
 
         private void StopIntegration()
         {
-            _isIntegrationRunning = false;
-            btnStartStop.Text = "BAŞLAT";
-            btnStartStop.BackColor = System.Drawing.Color.Green;
-            lblStatus.Text = "Entegrasyon durduruldu";
-
-            _logger.LogInfo("Entegrasyon durduruldu");
-
             if (_integrationTimer != null)
             {
                 _integrationTimer.Stop();
                 _integrationTimer.Dispose();
                 _integrationTimer = null;
             }
+
+            if (_integrationTimerProduction != null)
+            {
+                _integrationTimerProduction.Stop();
+                _integrationTimerProduction.Dispose();
+                _integrationTimerProduction = null;
+            }
+
+            _isIntegrationRunning = false;
+            btnStartStop.Text = "BAŞLAT";
+            btnStartStop.BackColor = System.Drawing.Color.Green;
+            lblStatus.Text = "Entegrasyon durduruldu";
+
+            _logger.LogInfo("Entegrasyon durduruldu");
         }
 
         private async Task RunIntegrationAsync()
         {
             try
             {
-                _logger.LogInfo("Entegrasyon döngüsü başlatıldı");
+                _logger.LogInfo("Standart Entegrasyon döngüsü başlatıldı");
+
+                UretimService urs = new UretimService(apiService, _logger);
+
+                //Invoke(new Action(() => txtLog.AppendText("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "] {Standart}=> Üretim durumları senkronize ediliyor...\r\n")));
+                //// 0. Üretim Durumlarını senkronize et
+                //await urs.UretimDurumlariniGonder();
+
+                Invoke(new Action(() => txtLog.AppendText("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "] {Standart}=> Malzemeler senkronize ediliyor...\r\n")));
+                // 1. Malzemeler senkronize et
+                await _integrationService.SyncMaterialsAsync();
+
+                Invoke(new Action(() => txtLog.AppendText("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "] {Standart}=> İş emirlerini senkronize ediliyor...\r\n")));
+                //// 2. İş emirlerini senkronize et
+                await _integrationService.SyncShopOrdersAsync();
+
+                //Invoke(new Action(() => txtLog.AppendText("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "] => Sevkiyatlar senkronize ediliyor...\r\n")));
+                ////// 3. Raporlanmamış sevkiyatları gönder
+                ////await _integrationService.ReportUnreportedShipmentsAsync();
+                //await urs.UretimVerisiGonder();
+
+                _logger.LogInfo("Standart Entegrasyon döngüsü tamamlandı");
+
+                if (InvokeRequired)
+                {
+                    Invoke(new Action(() => lblStatus.Text = $"Son çalıştırma {{Standart}}: {DateTime.Now:HH:mm:ss}"));
+                }
+                else
+                {
+                    lblStatus.Text = $"Son çalıştırma {{Standart}}: {DateTime.Now:HH:mm:ss}";
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Standart Entegrasyon döngüsü hatası", ex);
+            }
+        }
+
+        private async Task RunIntegrationProductionAsync()
+        {
+            try
+            {
+                _logger.LogInfo("Uretim Entegrasyon döngüsü başlatıldı");
 
                 UretimService urs = new UretimService(apiService, _logger);
 
@@ -254,33 +314,33 @@ namespace ENOYAEntegrasyonV2
                 // 0. Üretim Durumlarını senkronize et
                 await urs.UretimDurumlariniGonder();
 
-                Invoke(new Action(() => txtLog.AppendText("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "] => Malzemeler senkronize ediliyor...\r\n")));
-                // 1. Malzemeler senkronize et
-                await _integrationService.SyncMaterialsAsync();
+                //Invoke(new Action(() => txtLog.AppendText("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "] => Malzemeler senkronize ediliyor...\r\n")));
+                //// 1. Malzemeler senkronize et
+                //await _integrationService.SyncMaterialsAsync();
 
-                Invoke(new Action(() => txtLog.AppendText("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "] => İş emirlerini senkronize ediliyor...\r\n")));
-                //// 2. İş emirlerini senkronize et
-                await _integrationService.SyncShopOrdersAsync();
+                //Invoke(new Action(() => txtLog.AppendText("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "] => İş emirlerini senkronize ediliyor...\r\n")));
+                ////// 2. İş emirlerini senkronize et
+                //await _integrationService.SyncShopOrdersAsync();
 
-                Invoke(new Action(() => txtLog.AppendText("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "] => Sevkiyatlar senkronize ediliyor...\r\n")));
+                Invoke(new Action(() => txtLog.AppendText("[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "] {Uretim}=> Sevkiyatlar senkronize ediliyor...\r\n")));
                 //// 3. Raporlanmamış sevkiyatları gönder
                 //await _integrationService.ReportUnreportedShipmentsAsync();
                 await urs.UretimVerisiGonder();
 
-                _logger.LogInfo("Entegrasyon döngüsü tamamlandı");
+                _logger.LogInfo("Uretim Entegrasyon döngüsü tamamlandı");
 
                 if (InvokeRequired)
                 {
-                    Invoke(new Action(() => lblStatus.Text = $"Son çalıştırma: {DateTime.Now:HH:mm:ss}"));
+                    Invoke(new Action(() => lblStatus.Text = $"Son çalıştırma {{Uretim}}: {DateTime.Now:HH:mm:ss}"));
                 }
                 else
                 {
-                    lblStatus.Text = $"Son çalıştırma: {DateTime.Now:HH:mm:ss}";
+                    lblStatus.Text = $"Son çalıştırma {{Uretim}}: {DateTime.Now:HH:mm:ss}";
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError("Entegrasyon döngüsü hatası", ex);
+                _logger.LogError("Uretim Entegrasyon döngüsü hatası", ex);
             }
         }
 
@@ -289,6 +349,7 @@ namespace ENOYAEntegrasyonV2
             if (disposing)
             {
                 _integrationTimer?.Dispose();
+                _integrationTimerProduction?.Dispose();
                 _notifyIcon?.Dispose();
             }
             base.Dispose(disposing);
@@ -1343,6 +1404,11 @@ namespace ENOYAEntegrasyonV2
         private void exceleAktarToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             grdSiparis.ExportToXlsx("SiparisExcel.xlsx");
+        }
+
+        private void numInterval_ValueChanged(object sender, EventArgs e)
+        {
+            AppGlobals.appSettings.General.IntegrationIntervalSeconds = Convert.ToInt32(numInterval.Value);
         }
     }
 }

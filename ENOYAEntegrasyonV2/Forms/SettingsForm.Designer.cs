@@ -57,6 +57,8 @@ namespace ENOYAEntegrasyonV2.Forms
             this.lblDbServer = new System.Windows.Forms.Label();
             this.txtDbServer = new System.Windows.Forms.TextBox();
             this.grpApi = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtTokenEndPoint = new System.Windows.Forms.TextBox();
             this.btnTestApi = new System.Windows.Forms.Button();
             this.lblApiContract = new System.Windows.Forms.Label();
             this.txtApiContract = new System.Windows.Forms.TextBox();
@@ -79,7 +81,6 @@ namespace ENOYAEntegrasyonV2.Forms
             this.tabpageGlobal = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.btnSiloKaydet = new System.Windows.Forms.Button();
             this.ıDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dEFINITIONDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ıDCOLUMNNAMEDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -100,8 +101,7 @@ namespace ENOYAEntegrasyonV2.Forms
             this.tRFIELDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ıFSPARTNODataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.siloAdlariBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtTokenEndPoint = new System.Windows.Forms.TextBox();
+            this.btnSiloKaydet = new System.Windows.Forms.Button();
             this.grpDatabase.SuspendLayout();
             this.grpApi.SuspendLayout();
             this.grpSettings.SuspendLayout();
@@ -240,6 +240,22 @@ namespace ENOYAEntegrasyonV2.Forms
             this.grpApi.TabIndex = 1;
             this.grpApi.TabStop = false;
             this.grpApi.Text = "REST API Ayarları (IFS)";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(15, 48);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(84, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Token EndPoint";
+            // 
+            // txtTokenEndPoint
+            // 
+            this.txtTokenEndPoint.Location = new System.Drawing.Point(120, 45);
+            this.txtTokenEndPoint.Name = "txtTokenEndPoint";
+            this.txtTokenEndPoint.Size = new System.Drawing.Size(320, 20);
+            this.txtTokenEndPoint.TabIndex = 10;
             // 
             // btnTestApi
             // 
@@ -384,14 +400,19 @@ namespace ENOYAEntegrasyonV2.Forms
             // 
             // numInterval
             // 
+            this.numInterval.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             this.numInterval.Location = new System.Drawing.Point(258, 24);
             this.numInterval.Maximum = new decimal(new int[] {
-            3600,
+            112,
             0,
             0,
             0});
             this.numInterval.Minimum = new decimal(new int[] {
-            10,
+            20,
             0,
             0,
             0});
@@ -458,7 +479,7 @@ namespace ENOYAEntegrasyonV2.Forms
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(483, 465);
+            this.tabPage2.Size = new System.Drawing.Size(483, 484);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Bunker ve Silo Tanımları";
             // 
@@ -491,16 +512,6 @@ namespace ENOYAEntegrasyonV2.Forms
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(474, 422);
             this.dataGridView1.TabIndex = 2;
-            // 
-            // btnSiloKaydet
-            // 
-            this.btnSiloKaydet.Location = new System.Drawing.Point(6, 434);
-            this.btnSiloKaydet.Name = "btnSiloKaydet";
-            this.btnSiloKaydet.Size = new System.Drawing.Size(100, 30);
-            this.btnSiloKaydet.TabIndex = 1;
-            this.btnSiloKaydet.Text = "Silo Kaydet";
-            this.btnSiloKaydet.UseVisualStyleBackColor = true;
-            this.btnSiloKaydet.Click += new System.EventHandler(this.btnSiloKaydet_Click);
             // 
             // ıDDataGridViewTextBoxColumn
             // 
@@ -620,21 +631,15 @@ namespace ENOYAEntegrasyonV2.Forms
             // 
             this.siloAdlariBindingSource.DataSource = typeof(ENOYAEntegrasyonV2.Business.SiloAdlari);
             // 
-            // label1
+            // btnSiloKaydet
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 48);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(84, 13);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Token EndPoint";
-            // 
-            // txtTokenEndPoint
-            // 
-            this.txtTokenEndPoint.Location = new System.Drawing.Point(120, 45);
-            this.txtTokenEndPoint.Name = "txtTokenEndPoint";
-            this.txtTokenEndPoint.Size = new System.Drawing.Size(320, 20);
-            this.txtTokenEndPoint.TabIndex = 10;
+            this.btnSiloKaydet.Location = new System.Drawing.Point(6, 434);
+            this.btnSiloKaydet.Name = "btnSiloKaydet";
+            this.btnSiloKaydet.Size = new System.Drawing.Size(100, 30);
+            this.btnSiloKaydet.TabIndex = 1;
+            this.btnSiloKaydet.Text = "Silo Kaydet";
+            this.btnSiloKaydet.UseVisualStyleBackColor = true;
+            this.btnSiloKaydet.Click += new System.EventHandler(this.btnSiloKaydet_Click);
             // 
             // SettingsForm
             // 

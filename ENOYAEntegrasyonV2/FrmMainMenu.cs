@@ -24,7 +24,7 @@ namespace ENOYAEntegrasyonV2
 {
     public partial class FrmMainMenu : DevExpress.XtraEditors.XtraForm
     {
-        DateTime lDate = Convert.ToDateTime("31.07.2026");
+        DateTime lDate = Convert.ToDateTime("31.07.2027");
         private readonly ILoggerService _logger;
         private readonly IConfigurationService _configService;
         private IntegrationService _integrationService;

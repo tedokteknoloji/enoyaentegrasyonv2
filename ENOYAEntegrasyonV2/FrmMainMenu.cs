@@ -198,7 +198,7 @@ namespace ENOYAEntegrasyonV2
             numInterval.Value = AppGlobals.appSettings.General.IntegrationIntervalSeconds;
             chkUseAlternativeRoute.Checked = AppGlobals.appSettings.General.UseAlternativeRoute;
             teAlternativeRoute.Text = AppGlobals.appSettings.General.AlternativeRoute;
-
+            string fgf = AppGlobals.appSettings.Database.GetConnectionString();
 
             // Otomatik başlatma
             if (AppGlobals.appSettings.General.AutoStartIntegration)
@@ -966,7 +966,7 @@ namespace ENOYAEntegrasyonV2
                             + "," + BN.FieldReturnValues(tekilSiparisIcerik[0].ReleaseNo, 1)
                             + "," + BN.FieldReturnValues(tekilSiparisIcerik[0].SequenceNo, 1)
                             + "," + BN.FieldReturnValues(tekilSiparisIcerik[0].OrderCode, 1)
-                            + "," + BN.FieldReturnValues(tekilSiparisIcerik[0].PartNo, 1)
+                            + "," + BN.FieldReturnValues(tekilSiparisIcerik[0].AlternativeDesc, 1)
                             + "," + BN.FieldReturnValues(BN.KarakterDuzelt(tekilSiparisIcerik[0].PartDesc), 1)
                             + "," + BN.FieldReturnValues(tekilSiparisIcerik[0].RevisedQtyDue.ToString().Replace(',', '.'), 1)
                             + "," + BN.FieldReturnValues(tekilSiparisIcerik[0].MixingTime.ToString().Replace(',', '.'), 1)

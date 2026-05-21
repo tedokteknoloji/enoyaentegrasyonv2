@@ -491,7 +491,7 @@ namespace ENOYAEntegrasyonV2.Business
                             + "," + BN.FieldReturnValues(tekilSiparisIcerik[0].ReleaseNo, 1)
                             + "," + BN.FieldReturnValues(tekilSiparisIcerik[0].SequenceNo, 1)
                             + "," + BN.FieldReturnValues(tekilSiparisIcerik[0].OrderCode, 1)
-                            + "," + BN.FieldReturnValues(tekilSiparisIcerik[0].PartNo, 1)
+                            + "," + BN.FieldReturnValues(tekilSiparisIcerik[0].AlternativeDesc, 1)
                             + "," + BN.FieldReturnValues(BN.KarakterDuzelt(tekilSiparisIcerik[0].PartDesc), 1)
                             + "," + BN.FieldReturnValues(tekilSiparisIcerik[0].RevisedQtyDue.ToString().Replace(',', '.'), 1)
                             + "," + BN.FieldReturnValues(tekilSiparisIcerik[0].MixingTime.ToString().Replace(',', '.'), 1)
@@ -505,7 +505,7 @@ namespace ENOYAEntegrasyonV2.Business
                             //+ "," + EOFGlobalMethods.FieldReturnValues(KUMCC.ToString().Replace(',', '.'), 2)
                             //+ "," + EOFGlobalMethods.FieldReturnValues(KUMDD.ToString().Replace(',', '.'), 2)
                             ;
-
+                        //tekilSiparisIcerik[0].AlternativeDesc
                         File.WriteAllText("OrnekKAyit.txt", JsonConvert.SerializeObject(gonderimEsleme));
                         foreach (var esleme in gonderimEsleme)
                         {
